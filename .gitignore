@@ -1,0 +1,40 @@
+# --- Compilados y artefactos de build ---
+build/
+bin/
+out/
+*.class
+
+# --- Gradle ---
+.gradle/
+
+# --- IntelliJ IDEA ---
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# --- Sistema operativo ---
+.DS_Store
+Thumbs.db
+
+# --- Python ---
+__pycache__/
+/app/src/main/java/ar/uba/fi/cb100/clases/a2026/c02/tps/tp1/generar-pdf.py
+
+# --- Excluir resto del contenido de la cursada (código principal) ---
+/app/src/main/java/ar/uba/fi/cb100/librerias/
+/app/src/main/java/ar/uba/fi/cb100/guia/
+/app/src/main/java/ar/uba/fi/cb100/material/
+/app/src/main/java/ar/uba/fi/cb100/examenes/
+/app/src/main/java/ar/uba/fi/cb100/clases/a2026/c02/s*/
+
+# --- Excluir resto del contenido de la cursada (tests) ---
+/app/src/test/java/ar/uba/fi/cb100/librerias/
+/app/src/test/java/ar/uba/fi/cb100/guia/
+/app/src/test/java/ar/uba/fi/cb100/material/
+/app/src/test/java/ar/uba/fi/cb100/examenes/
+/app/src/test/java/ar/uba/fi/cb100/clases/a2026/c02/s*/
+
+# --- Excluir TP1 (código y tests) ---
+/app/src/main/java/ar/uba/fi/cb100/clases/a2026/c02/tps/tp1/
+/app/src/test/java/ar/uba/fi/cb100/clases/a2026/c02/tps/tp1/
