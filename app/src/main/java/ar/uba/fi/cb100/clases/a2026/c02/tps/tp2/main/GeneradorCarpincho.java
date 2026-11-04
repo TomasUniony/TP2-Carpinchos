@@ -1,4 +1,4 @@
-package tps.tp2;
+package ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.main;
 
 /**
 * Genera un plano de la mazmorra a partir de los parametros que recibe.
@@ -467,8 +467,8 @@ public class GeneradorCarpincho implements GeneradorDeLaberinto{
 
     //BORRAR
     public static void main(String[] args) {
-        Path entrada = Path.of("src/main/java/tps/tp2/configuracion.json");
-        Path salida = Path.of("src/main/java/tps/tp2/salida.json");
+        Path entrada = Path.of("app/src/main/java/ar/uba/fi/cb100/clases/a2026/c02/tps/tp2/main/configuracion.json");
+        Path salida = Path.of("app/src/main/java/ar/uba/fi/cb100/clases/a2026/c02/tps/tp2/main/salida.json");
 
         String parametrosJson;
         try {
