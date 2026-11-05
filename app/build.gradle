@@ -72,6 +72,11 @@ test {
     testLogging { events "passed", "skipped", "failed" }
 }
 
+//Para que gradle no tire error de kotlin.
+task prepareKotlinBuildScriptModel {
+
+}
+
 // --- Clase principal (la que tiene el método main) --------------------
 application {
     mainClass = 'ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.main.GeneradorCarpincho' //para pruebas
