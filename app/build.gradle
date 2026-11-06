@@ -79,7 +79,7 @@ task prepareKotlinBuildScriptModel {
 
 // --- Clase principal (la que tiene el método main) --------------------
 application {
-    mainClass = 'ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.main.GeneradorCarpincho' //para pruebas
+    mainClass = 'ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.main.EjecutarJuego' //para pruebas
 
     // Codificación de la SALIDA del programa. Compilar en UTF-8 no alcanza:
     // desde Java 18, System.out escribe con la página de códigos de la
