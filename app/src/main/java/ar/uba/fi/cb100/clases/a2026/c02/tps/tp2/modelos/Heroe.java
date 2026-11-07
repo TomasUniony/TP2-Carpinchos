@@ -45,7 +45,7 @@ public class Heroe {
         return this.energia != 0;
     }
 
-    public void movimiento(Posicion nuevaPos) {
-        this.posicionActual = nuevaPos;
+    public void movimiento(Direccion dir) {
+        this.posicionActual.desplazar(dir);
     }
 }
