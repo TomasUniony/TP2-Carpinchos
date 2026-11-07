@@ -66,6 +66,10 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
+tasks.named('run', JavaExec) { //Para solucionar el error de que arroja gradle, porque no redirige la entrada interactiva de la consola
+    standardInput = System.in
+}
+
 // --- Cómo correr los tests --------------------------------------------
 test {
     useJUnitPlatform()   // decirle a Gradle que use JUnit 5

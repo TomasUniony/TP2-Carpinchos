@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Scanner;
 
 public class EjecutarJuego {
 
@@ -44,7 +45,15 @@ public class EjecutarJuego {
         throw new RuntimeException("No se encontro la posicion del heore.");
     }
 
+
     public static void main(String[] args) throws IOException {
+
+        Scanner scanner = new Scanner(System.in);
+
+        boolean iniciarPartida = MenuDeInicio.mostrarMenu(scanner);
+
+        //menu que tenga 3 apartados: jugar, dificultades, salir
+        //generar el json
 
         Path salida = Path.of("src/main/java/ar/uba/fi/cb100/clases/a2026/c02/tps/tp2/main/salida.json"); //Json de salida
 
@@ -56,7 +65,9 @@ public class EjecutarJuego {
 
         Heroe heroe = crearHeroe(plano);
 
-        imprimirTablero(plano, heroe.getPosicion(), heroe.getEnergia());
+        if(iniciarPartida){
+            imprimirTablero(plano, heroe.getPosicion(), heroe.getEnergia());
+        }
 
     }
 
