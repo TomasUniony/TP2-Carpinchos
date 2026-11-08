@@ -1,5 +1,6 @@
 package ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.main;
 
+import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos.Direccion;
 import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos.Heroe;
 import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos.Posicion;
 import com.google.gson.Gson;
@@ -45,30 +46,55 @@ public class EjecutarJuego {
         throw new RuntimeException("No se encontro la posicion del heore.");
     }
 
+    private static void moverHeroe(String entrada, Heroe heroe) {
+        if(entrada.length() != 1) {
+            System.out.println("Tecla ingresada inválida.");
+            return;
+        }
+
+        Direccion dir = Direccion.teclaIngresada(entrada.charAt(0));
+        if (dir == null) {
+            System.out.println("Tecla ingresada inválida.");
+            return;
+        }
+        System.out.println(entrada.charAt(0));
+        heroe.movimiento(dir);
+    }
+
 
     public static void main(String[] args) throws IOException {
 
         Scanner scanner = new Scanner(System.in);
 
         boolean iniciarPartida = MenuDeInicio.mostrarMenu(scanner);
-
-        //menu que tenga 3 apartados: jugar, dificultades, salir
         //generar el json
 
         Path salida = Path.of("src/main/java/ar/uba/fi/cb100/clases/a2026/c02/tps/tp2/main/salida.json"); //Json de salida
 
-        String jsonTexto = Files.readString(salida, StandardCharsets.UTF_8); //Lee el json como texto
-
-        //Parsea el JSON y extrae el campo "plano"
-        JsonObject jsonObject = JsonParser.parseString(jsonTexto).getAsJsonObject();
-        String[] plano = new Gson().fromJson(jsonObject.get("plano"), String[].class);
-
-        Heroe heroe = crearHeroe(plano);
-
-        if(iniciarPartida){
-            imprimirTablero(plano, heroe.getPosicion(), heroe.getEnergia());
+        if(!Files.exists(salida)) {
+            throw new IllegalArgumentException("No se encontró el archivo de salida JSON");
         }
 
+        if(iniciarPartida){
+
+            String jsonTexto = Files.readString(salida, StandardCharsets.UTF_8); //Lee el json como texto
+
+            //Parsea el JSON y extrae el campo "plano"
+            JsonObject jsonObject = JsonParser.parseString(jsonTexto).getAsJsonObject();
+            String[] plano = new Gson().fromJson(jsonObject.get("plano"), String[].class);
+
+            Heroe heroe = crearHeroe(plano);
+
+            while (heroe.tieneEnergia()) {
+
+                imprimirTablero(plano, heroe.getPosicion(), heroe.getEnergia());
+                System.out.println("\n Ingrese movimiento (w(arriba), s(abajo), a(izquierda), d(derecha): ");
+                System.out.println("fila: " + heroe.getPosicion().fila() + "columna: " + heroe.getPosicion().columna());
+
+                String entrada = scanner.nextLine().trim().toLowerCase();
+                moverHeroe(entrada, heroe);
+            }
+        }
     }
 
 }

@@ -46,6 +46,6 @@ public class Heroe {
     }
 
     public void movimiento(Direccion dir) {
-        this.posicionActual.desplazar(dir);
+        this.posicionActual = this.posicionActual.desplazar(dir);
     }
 }
