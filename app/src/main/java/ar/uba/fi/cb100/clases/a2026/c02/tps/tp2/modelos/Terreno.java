@@ -30,7 +30,7 @@ public enum Terreno {
         return this.costoEnergia;
     }
 
-    public static Terreno simbolo(char simbolo) {
+    public static Terreno desdeSimbolo(char simbolo) {
         for (Terreno t : values()) {
             if (t.simbolo == simbolo) {
                 return t;

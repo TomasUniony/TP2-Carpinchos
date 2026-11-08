@@ -3,6 +3,7 @@ package ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.main;
 import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos.Direccion;
 import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos.Heroe;
 import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos.Posicion;
+import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos.Terreno;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -46,23 +47,48 @@ public class EjecutarJuego {
         throw new RuntimeException("No se encontro la posicion del heore.");
     }
 
-    private static void moverHeroe(String entrada, Heroe heroe) {
+    private static boolean moverHeroe(String entrada, Heroe heroe, String[] plano) {
+
         if(entrada.length() != 1) {
             System.out.println("Tecla ingresada inválida.");
-            return;
+            return false;
         }
 
         Direccion dir = Direccion.teclaIngresada(entrada.charAt(0));
         if (dir == null) {
             System.out.println("Tecla ingresada inválida.");
-            return;
+            return false;
         }
-        System.out.println(entrada.charAt(0));
-        heroe.movimiento(dir);
+
+        Posicion posHeroe = heroe.getPosicion();
+        Posicion posDestino = new Posicion(
+               posHeroe.fila() + dir.deltaFila(),
+               posHeroe.columna() + dir.deltaColumna()
+        );
+
+        char celdaDestino = plano[posDestino.fila()].charAt(posDestino.columna()); //para obtener el caracter de la celda
+        Terreno terreno = Terreno.desdeSimbolo(celdaDestino);
+
+        if (!terreno.esTransitable()) { //validar transitabilidad usando el propio enum
+            System.out.println("No puedes avanzar a través de una pared.");
+            return false;
+        }
+
+        heroe.movimiento(dir); //mover al heroe y descontar la energia
+        heroe.quitarEnergia(terreno.costoEnergia());
+
+        if (terreno == Terreno.SALIDA) { //si es la salida, devolver true
+            System.out.println("¡Lograste escapar!");
+            return true;
+        }
+
+        return false;
     }
 
 
     public static void main(String[] args) throws IOException {
+
+        GeneradorCarpincho.main(args);
 
         Scanner scanner = new Scanner(System.in);
 
@@ -85,14 +111,21 @@ public class EjecutarJuego {
 
             Heroe heroe = crearHeroe(plano);
 
-            while (heroe.tieneEnergia()) {
+            boolean llegoALaSalida = false;
+
+            while (heroe.tieneEnergia() && !llegoALaSalida) {
 
                 imprimirTablero(plano, heroe.getPosicion(), heroe.getEnergia());
                 System.out.println("\n Ingrese movimiento (w(arriba), s(abajo), a(izquierda), d(derecha): ");
                 System.out.println("fila: " + heroe.getPosicion().fila() + "columna: " + heroe.getPosicion().columna());
 
                 String entrada = scanner.nextLine().trim().toLowerCase();
-                moverHeroe(entrada, heroe);
+
+                llegoALaSalida = moverHeroe(entrada, heroe, plano);
+            }
+
+            if (!heroe.tieneEnergia()) {
+                System.out.println("¡Has perdido!");
             }
         }
     }
