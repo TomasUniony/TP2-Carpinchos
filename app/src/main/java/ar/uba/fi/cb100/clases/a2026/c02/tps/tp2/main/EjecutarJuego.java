@@ -4,11 +4,13 @@ import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos.Direccion;
 import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos.Heroe;
 import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos.Posicion;
 import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos.Terreno;
+import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.persistencia.GestorJson;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -88,14 +90,24 @@ public class EjecutarJuego {
 
     public static void main(String[] args) throws IOException {
 
-        GeneradorCarpincho.main(args);
+        Path config = Path.of("src/main/java/ar/uba/fi/cb100/clases/a2026/c02/tps/tp2/main/configuracion.json");
+        Path salida = Path.of("src/main/java/ar/uba/fi/cb100/clases/a2026/c02/tps/tp2/main/salida.json"); //Json de salida
+
+        String parametrosJson;
+        try {
+            parametrosJson = Files.readString(config, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new UncheckedIOException("No se pudo leer " + config, e);
+        }
+
+        String planoJson = new GeneradorCarpincho().generar(parametrosJson);
+
+        GestorJson.guardarJson(planoJson, salida);
 
         Scanner scanner = new Scanner(System.in);
 
         boolean iniciarPartida = MenuDeInicio.mostrarMenu(scanner);
         //generar el json
-
-        Path salida = Path.of("src/main/java/ar/uba/fi/cb100/clases/a2026/c02/tps/tp2/main/salida.json"); //Json de salida
 
         if(!Files.exists(salida)) {
             throw new IllegalArgumentException("No se encontró el archivo de salida JSON");
