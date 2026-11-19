@@ -1,10 +1,10 @@
-package ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.main;
+package ar.uba.fi.cb100.tps.tp2;
 
-import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos.Direccion;
-import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos.Heroe;
-import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos.Posicion;
-import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos.Terreno;
-import ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.persistencia.GestorJson;
+import ar.uba.fi.cb100.tps.tp2.modelos.Direccion;
+import ar.uba.fi.cb100.tps.tp2.modelos.Heroe;
+import ar.uba.fi.cb100.tps.tp2.modelos.Posicion;
+import ar.uba.fi.cb100.tps.tp2.modelos.Terreno;
+import ar.uba.fi.cb100.tps.tp2.persistencia.GestorJson;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -90,8 +90,8 @@ public class EjecutarJuego {
 
     public static void main(String[] args) throws IOException {
 
-        Path config = Path.of("src/main/java/ar/uba/fi/cb100/clases/a2026/c02/tps/tp2/main/configuracion.json");
-        Path salida = Path.of("src/main/java/ar/uba/fi/cb100/clases/a2026/c02/tps/tp2/main/salida.json"); //Json de salida
+        Path config = Path.of("src/main/java/ar/uba/fi/cb100/tps/tp2/configuracion.json");
+        Path salida = Path.of("src/main/java/ar/uba/fi/cb100/tps/tp2/salida.json"); //Json de salida
 
         String parametrosJson;
         try {

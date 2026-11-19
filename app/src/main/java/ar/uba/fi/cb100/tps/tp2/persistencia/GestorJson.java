@@ -1,13 +1,13 @@
-package ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.persistencia;
-
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonParser;
+package ar.uba.fi.cb100.tps.tp2.persistencia;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
 
 public class GestorJson {
 

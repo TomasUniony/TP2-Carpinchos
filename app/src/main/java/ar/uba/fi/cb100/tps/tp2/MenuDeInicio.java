@@ -1,5 +1,4 @@
-package ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.main;
-
+package ar.uba.fi.cb100.tps.tp2;
 import java.util.Scanner;
 
 public class MenuDeInicio {
