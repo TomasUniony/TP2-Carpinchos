@@ -1,0 +1,54 @@
+package ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.persistencia;
+
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonParser;
+
+import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+public class GestorJson {
+
+    // Constructor privado para evitar que se instancie una clase utilitaria
+    private GestorJson() {
+        throw new UnsupportedOperationException("Clase utilitaria de persistencia");
+    }
+
+    /**
+     * Formatea un String JSON con pretty printing y lo escribe en disco.
+     * Crea los directorios padres si no existen.
+     */
+    public static void guardarJson(String json, Path destino) {
+        if (json == null || destino == null) {
+            throw new IllegalArgumentException("El contenido JSON y la ruta de destino no pueden ser nulos");
+        }
+
+        // Formatea el JSON para que quede tabulado.
+
+        String indentado = new GsonBuilder().setPrettyPrinting().serializeNulls().create().toJson(JsonParser.parseString(json));
+        /*
+        1.new GsonBuilder(): Crea un constructor configurable para instanciar el motor de la librería Gson.
+        2.setPrettyPrinting(): Activa la sangría y los saltos de línea en la cadena resultante.
+        3.serializeNulls(): Configura el serializador para que incluya explícitamente las claves cuyos valores sean
+        nulos (por ejemplo "salida": null) en lugar de omitirlas.
+        4.create(): Construye e instancia la plantilla final configurada de Gson.
+        5.JsonParser.parseString(json): Parsea la cadena cruda json convirtiéndola temporalmente en una
+        estructura de objetos en memoria (JsonElement).
+        6.toJson(...): Convierte esa estructura de nuevo a un String aplicando todas las reglas configuradas
+        (formato indentado e inclusión de nulos).
+        7.String indentado = Almacena el resultado formateado en la variable local indentado.
+         */
+
+        try {
+            Path carpeta = destino.getParent();
+            if (carpeta != null) {
+                Files.createDirectories(carpeta);
+            }
+            Files.writeString(destino, indentado, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new UncheckedIOException("No se pudo guardar el archivo JSON en: " + destino, e);
+        }
+    }
+}

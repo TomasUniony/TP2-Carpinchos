@@ -66,15 +66,24 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
 
+tasks.named('run', JavaExec) { //Para solucionar el error de que arroja gradle, porque no redirige la entrada interactiva de la consola
+    standardInput = System.in
+}
+
 // --- Cómo correr los tests --------------------------------------------
 test {
     useJUnitPlatform()   // decirle a Gradle que use JUnit 5
     testLogging { events "passed", "skipped", "failed" }
 }
 
+//Para que gradle no tire error de kotlin.
+task prepareKotlinBuildScriptModel {
+
+}
+
 // --- Clase principal (la que tiene el método main) --------------------
 application {
-    mainClass = 'ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.main.GeneradorCarpincho' //para pruebas
+    mainClass = 'ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.main.EjecutarJuego' //para pruebas
 
     // Codificación de la SALIDA del programa. Compilar en UTF-8 no alcanza:
     // desde Java 18, System.out escribe con la página de códigos de la
