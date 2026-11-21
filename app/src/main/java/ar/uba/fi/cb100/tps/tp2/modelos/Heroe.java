@@ -4,17 +4,11 @@ public class Heroe {
     private Posicion posicionActual;
     //private final Inventario(seria un arreglo de items, Item[]) inventario;
 
-    public Heroe(int fila, int columna, int energiaInicial) {
-        if (fila <= 0) { //fila no puede ser menor ni igual a 0 (es una pared)
-            throw new IllegalArgumentException("Numero de fila invalido: " + fila);
-        }
-        if (columna <= 0) { //columna no puede ser menor ni 0 (es una pared)
-            throw new IllegalArgumentException("Numero de columna invalido: " + columna);
-        }
+    public Heroe(Posicion pos, int energiaInicial) {
         if (energiaInicial <= 0) {
             throw new IllegalArgumentException("Energia inicial invalida: " + energiaInicial);
         }
-        this.posicionActual = new Posicion(fila, columna);
+        this.posicionActual = pos;
         this.energia = energiaInicial;
     }
 
