@@ -1,4 +1,4 @@
-package tps.tp2;
+package ar.uba.fi.cb100.tps.tp2;
 
 import java.util.ArrayDeque;
 import java.util.ArrayList;

@@ -1,5 +1,4 @@
-package ar.uba.fi.cb100.clases.a2026.c02.tps.tp2.modelos;
-
+package ar.uba.fi.cb100.tps.tp2.modelos;
 public class Heroe {
     private int energia;
     private Posicion posicionActual;
