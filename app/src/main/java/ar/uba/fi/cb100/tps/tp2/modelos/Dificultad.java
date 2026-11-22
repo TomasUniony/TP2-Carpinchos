@@ -29,4 +29,16 @@ public enum Dificultad {
         return porcentajeLava;
     }
 
+    public static Dificultad desdeNombre(String nombre) {
+        if (nombre == null) {
+            throw new IllegalArgumentException("El nombre de la dificultad no puede ser nulo.");
+        }
+        for (Dificultad d : values()) {
+            if (d.name().equalsIgnoreCase(nombre.trim())) {
+                return d;
+            }
+        }
+        throw new IllegalArgumentException("Dificultad inválida: " + nombre);
+    }
+
 }
