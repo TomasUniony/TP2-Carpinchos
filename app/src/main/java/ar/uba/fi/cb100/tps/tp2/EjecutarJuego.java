@@ -1,9 +1,6 @@
 package ar.uba.fi.cb100.tps.tp2;
 
-import ar.uba.fi.cb100.tps.tp2.modelos.Direccion;
-import ar.uba.fi.cb100.tps.tp2.modelos.Heroe;
-import ar.uba.fi.cb100.tps.tp2.modelos.Posicion;
-import ar.uba.fi.cb100.tps.tp2.modelos.Terreno;
+import ar.uba.fi.cb100.tps.tp2.modelos.*;
 import ar.uba.fi.cb100.tps.tp2.persistencia.GestorJson;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -11,6 +8,7 @@ import com.google.gson.JsonParser;
 
 import java.io.IOException;
 import java.io.UncheckedIOException;
+import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -18,38 +16,30 @@ import java.util.Scanner;
 
 public class EjecutarJuego {
 
-    private static void imprimirTablero(String[] plano, Posicion posHeroe, int energia) {
+    private static void imprimirTablero(Plano plano, Posicion posHeroe, int energia) {
 
         System.out.println("\n=== ENERGÍA: " + energia + " ==="); //Muestra el estado del heroe
 
-        for (int i = 0; i < plano.length; i++) {
-            String fila = plano[i];
-            for (int j = 0; j < fila.length(); j++) {
+        for (int i = 0; i < plano.getCantidadFilas(); i++) {
+            for (int j = 0; j < plano.getCantidadColumna(); j++) {
                 if (i == posHeroe.fila() && j == posHeroe.columna()) {
                     System.out.print('E');
                 } else {
-                    System.out.print(fila.charAt(j)); // Dibuja el carácter real del terreno
+                    System.out.print(plano.getCaracter(i, j)); // Dibuja el carácter real del terreno
                 }
             }
             System.out.println(); // Salto de línea al finalizar cada fila
         }
     }
 
-    private static Heroe crearHeroe(String[] plano) {
+    private static Heroe crearHeroe(Plano plano) {
 
-        for (int i = 0; i < plano.length; i++) {
-            String fila = plano[i];
-            for (int j = 0; j < fila.length(); j++) {
-                if(fila.charAt(j) == 'E') {
-                    return new Heroe(i, j, 100);
-                }
-            }
-        }
+        Posicion posHeroe = plano.getPosicionHeroe();
+        return new Heroe(posHeroe, 100);
 
-        throw new RuntimeException("No se encontro la posicion del heore.");
     }
 
-    private static boolean moverHeroe(String entrada, Heroe heroe, String[] plano) {
+    private static boolean moverHeroe(String entrada, Heroe heroe, Plano plano) {
 
         if(entrada.length() != 1) {
             System.out.println("Tecla ingresada inválida.");
@@ -68,7 +58,7 @@ public class EjecutarJuego {
                posHeroe.columna() + dir.deltaColumna()
         );
 
-        char celdaDestino = plano[posDestino.fila()].charAt(posDestino.columna()); //para obtener el caracter de la celda
+        char celdaDestino = plano.getCaracter(posDestino.fila(), posDestino.columna()); //para obtener el caracter de la celda
         Terreno terreno = Terreno.desdeSimbolo(celdaDestino);
 
         if (!terreno.esTransitable()) { //validar transitabilidad usando el propio enum
@@ -119,7 +109,9 @@ public class EjecutarJuego {
 
             //Parsea el JSON y extrae el campo "plano"
             JsonObject jsonObject = JsonParser.parseString(jsonTexto).getAsJsonObject();
-            String[] plano = new Gson().fromJson(jsonObject.get("plano"), String[].class);
+            String[] planoString = new Gson().fromJson(jsonObject.get("plano"), String[].class);
+
+            Plano plano = new Plano(planoString);
 
             Heroe heroe = crearHeroe(plano);
 
