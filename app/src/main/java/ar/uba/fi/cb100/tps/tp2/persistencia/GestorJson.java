@@ -5,8 +5,12 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Random;
 
+import ar.uba.fi.cb100.tps.tp2.modelos.Configuracion;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonNull;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class GestorJson {
@@ -50,5 +54,24 @@ public class GestorJson {
         } catch (IOException e) {
             throw new UncheckedIOException("No se pudo guardar el archivo JSON en: " + destino, e);
         }
+    }
+
+    public static String modificarJson(String json, Path ruta, Configuracion configuracion) throws IOException { //devuelve el json reescrito
+
+        JsonObject jsonObject = JsonParser.parseString(json).getAsJsonObject(); //parsear el texto a JsonObject
+
+        jsonObject.addProperty("dificultad", configuracion.dificultad().nombreDificultad()); //cambia la dificultad
+
+        if (configuracion.semilla() != null) { //cambia la semilla
+            jsonObject.addProperty("semilla", configuracion.semilla());
+        } else {
+            jsonObject.addProperty("semilla", new Random().nextLong()); //crea un long random para no generar problemas en el generador.
+        }
+
+        String jsonFormateado = new GsonBuilder().setPrettyPrinting().serializeNulls().create().toJson(jsonObject); //formatea el json
+
+        Files.writeString(ruta, jsonFormateado, StandardCharsets.UTF_8); //reescribe configuracion.json
+
+        return jsonFormateado; //devuelve el json para no tener que llamarlo nuevamente
     }
 }
