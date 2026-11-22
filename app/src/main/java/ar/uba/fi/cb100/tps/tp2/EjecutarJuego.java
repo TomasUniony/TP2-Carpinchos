@@ -94,11 +94,14 @@ public class EjecutarJuego {
 
         Dificultad dificultadInicial = Dificultad.desdeNombre(datosIniciales.get("dificultad").getAsString());
         long semillaInicial = datosIniciales.get("semilla").getAsLong();
-        Configuracion configuracionInicial = new Configuracion(dificultadInicial, semillaInicial);
+        Configuracion configuracionInicial = new Configuracion(dificultadInicial, semillaInicial); //Creo la dificultad inicial, para poder modificarla
 
         Scanner scanner = new Scanner(System.in);
-        Configuracion iniciarPartida = MenuDeInicio.mostrarMenu(scanner, configuracionInicial);
+        Configuracion iniciarPartida = MenuDeInicio.mostrarMenu(scanner, configuracionInicial); //devuelve una nueva configuracion, que puede o no estar modificada
 
+        if ((iniciarPartida != null) && !iniciarPartida.equals(configuracionInicial)) {
+            parametrosJson = GestorJson.modificarJson(parametrosJson, config, iniciarPartida);
+        }
 
         String planoJson = new GeneradorCarpincho().generar(parametrosJson);
 
