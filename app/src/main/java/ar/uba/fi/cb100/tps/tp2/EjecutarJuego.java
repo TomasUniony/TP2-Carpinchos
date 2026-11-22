@@ -90,20 +90,27 @@ public class EjecutarJuego {
             throw new UncheckedIOException("No se pudo leer " + config, e);
         }
 
+        JsonObject datosIniciales = JsonParser.parseString(parametrosJson).getAsJsonObject();
+
+        Dificultad dificultadInicial = Dificultad.desdeNombre(datosIniciales.get("dificultad").getAsString());
+        long semillaInicial = datosIniciales.get("semilla").getAsLong();
+        Configuracion configuracionInicial = new Configuracion(dificultadInicial, semillaInicial);
+
+        Scanner scanner = new Scanner(System.in);
+        Configuracion iniciarPartida = MenuDeInicio.mostrarMenu(scanner, configuracionInicial);
+
+
         String planoJson = new GeneradorCarpincho().generar(parametrosJson);
 
         GestorJson.guardarJson(planoJson, salida);
 
-        Scanner scanner = new Scanner(System.in);
-
-        boolean iniciarPartida = MenuDeInicio.mostrarMenu(scanner);
         //generar el json
 
         if(!Files.exists(salida)) {
             throw new IllegalArgumentException("No se encontró el archivo de salida JSON");
         }
 
-        if(iniciarPartida){
+        if(iniciarPartida != null){
 
             String jsonTexto = Files.readString(salida, StandardCharsets.UTF_8); //Lee el json como texto
 
