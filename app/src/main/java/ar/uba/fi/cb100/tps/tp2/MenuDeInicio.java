@@ -48,7 +48,12 @@ public class MenuDeInicio {
         switch (seleccion) {
             case "1" -> {
                 System.out.println("\nInserte la semilla: ");
-                return scanner.nextLong();
+                try {
+                    return Long.parseLong(scanner.nextLine().trim());
+                } catch (NumberFormatException e) { //En caso de que no sea convertible
+                    System.out.println("Semilla invalida");
+                    return configuracion.semilla();
+                }
             }
             case "2" -> {
                 return configuracion.semilla();
@@ -56,9 +61,11 @@ public class MenuDeInicio {
             case "3" -> {
                 return null;
             }
-            default -> System.out.println("Opción invalida.");
+            default -> {
+                System.out.println("Opción invalida.");
+                return configuracion.semilla();
+            }
         }
-        return null;
     }
 
     private static Dificultad menuDificultades(Scanner scanner, Configuracion configuracion) {
@@ -87,7 +94,7 @@ public class MenuDeInicio {
             }
             default -> System.out.println("Opción invalida.");
         }
-        return null;
+        return configuracion.dificultad();
     }
 
 }
