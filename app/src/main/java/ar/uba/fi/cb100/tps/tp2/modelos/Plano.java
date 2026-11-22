@@ -11,6 +11,9 @@ public class Plano {
         this.grilla = new char[plano.length][];
 
         for (int i = 0; i < plano.length; i++) {
+            if (plano[i] == null) {
+                throw new IllegalArgumentException("La fila " + i + " no puede ser nula.");
+            }
             this.grilla[i] = plano[i].toCharArray();
         }
     }
