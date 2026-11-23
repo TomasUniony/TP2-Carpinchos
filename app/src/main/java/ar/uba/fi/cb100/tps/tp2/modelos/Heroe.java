@@ -3,6 +3,8 @@ public class Heroe {
     private int energia;
     private Posicion posicionActual;
     //private final Inventario(seria un arreglo de items, Item[]) inventario;
+    private final Inventario inventario = new Inventario();
+    private int puntos = 0;
 
     public Heroe(int fila, int columna, int energiaInicial) {
         if (fila <= 0) { //fila no puede ser menor ni igual a 0 (es una pared)
@@ -24,6 +26,20 @@ public class Heroe {
 
     public Posicion getPosicion() {
         return this.posicionActual;
+    }
+
+    /** Inventario del heroe. */
+    public Inventario getInventario() {
+        return this.inventario;
+    }
+
+    
+    public void sumarPuntos(int puntos){
+        this.puntos += puntos;
+    }
+
+    public int getPuntos(){
+        return this.puntos;
     }
 
     public void agregarEnergia(int energia){
