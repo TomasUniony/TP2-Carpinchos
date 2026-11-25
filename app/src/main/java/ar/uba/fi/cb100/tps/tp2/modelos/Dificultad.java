@@ -3,31 +3,57 @@ package ar.uba.fi.cb100.tps.tp2.modelos;
 //Reciclaje del dificultad de GeneradorCarpincho
 public enum Dificultad {
     //nombre, porcentaje del agua, porcentaje de la lava
-    FACIL("FACIL", 0.05, 0.00),
-    MEDIO("MEDIO", 0.08, 0.03),
-    DIFICIL("DIFICIL", 0.10, 0.06);
+    FACIL("FACIL", 1, 1, 25, 40, 12, 4, 0, 0),
+    MEDIO("MEDIO", 1, 3, 15, 20, 6, 6, 2, 0),
+    DIFICIL("DIFICIL", 3, 3, 15, 20, 3, 10, 6, 3);
 
     private final String nombreDificultad;
-    private final double porcentajeAgua;
-    private final double porcentajeLava;
+    private final int cantTableros;
+    private final int pisosPorTablero;
+    private final int filas;
+    private final int columnas;
+    private final int cantCofres;
+    private final int cantMonstruos;
+    private final int cantEscaleras;
+    private final int cantPasillos;
 
-    Dificultad(String nombreDificultad, double porcentajeAgua, double porcentajeLava) {
+    Dificultad(String nombreDificultad, int cantTableros, int pisosPorTablero, int filas, int columnas,
+               int cantCofres, int cantMonstruos, int cantEscaleras, int cantPasillos) {
         this.nombreDificultad = nombreDificultad;
-        this.porcentajeAgua = porcentajeAgua;
-        this.porcentajeLava = porcentajeLava;
+        this.cantTableros = cantTableros;
+        this.pisosPorTablero = pisosPorTablero;
+        this.filas = filas;
+        this.columnas = columnas;
+        this.cantCofres = cantCofres;
+        this.cantMonstruos = cantMonstruos;
+        this.cantEscaleras = cantEscaleras;
+        this.cantPasillos = cantPasillos;
+
     }
 
     public String nombreDificultad() {
         return nombreDificultad;
     }
 
-    public double porcentajeAgua() {
-        return porcentajeAgua;
+    public int cantTableros() {
+        return cantTableros;
     }
 
-    public double porcentajeLava() {
-        return porcentajeLava;
+    public int pisosPorTablero() {
+        return pisosPorTablero;
     }
+
+    public int filas() { return filas; }
+
+    public int columnas() { return columnas; }
+
+    public int cantCofres() { return cantCofres; }
+
+    public int cantMonstruos() { return cantMonstruos; }
+
+    public int cantEscalesras() { return cantEscaleras; }
+
+    public int cantPasillos() { return cantPasillos; }
 
     public static Dificultad desdeNombre(String nombre) {
         if (nombre == null) {
