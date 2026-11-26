@@ -1,7 +1,10 @@
 package ar.uba.fi.cb100.tps.tp2.modelos;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Plano {
-    private final char[][] grilla;
+    private final Terreno[][] grilla;
     private boolean salida;
     private Posicion posicionSalida;
     private Posicion posicionHeroe;
@@ -11,7 +14,7 @@ public class Plano {
             throw new IllegalArgumentException("El plano no puede estar vacío.");
         }
 
-        this.grilla = new char[plano.length][plano[0].length()];
+        this.grilla = new Terreno[plano.length][plano[0].length()];
 
         //se recorre caractero a caracter para llenar todos los datos en un recorrido solo
         for (int i = 0; i < plano.length; i++) {
@@ -22,7 +25,7 @@ public class Plano {
 
             for (int j = 0; j < plano[0].length(); j++) {
                 char c = plano[i].charAt(j);
-                this.grilla[i][j] = c;
+                this.grilla[i][j] = Terreno.desdeSimbolo(c);
 
                 //si se encuentran, se agrega en el estado
                 if (c == 'E') {
@@ -39,8 +42,8 @@ public class Plano {
         }
     }
 
-    public char caracter(int fil, int col) {
-        return grilla[fil][col];
+    public Terreno terreno(Posicion posicion) {
+        return grilla[posicion.fila()][posicion.columna()];
     }
 
     public int cantidadFilas() {
@@ -66,52 +69,75 @@ public class Plano {
         int filas = cantidadFilas();
         int columnas = cantidadColumna();
 
-        //busca coincidencia directa de celdas libres en ambos planos
-        for (int f = 1; f < filas - 1; f++) { //empieza en 1 y termina en -1, porque no nos sirve recorrer los bordes del mapa
-            for (int c = 1; c < columnas - 1; c++) {
-                Posicion pos = new Posicion(f, c);
+        Posicion posicionFallback = null;
+        Plano planoAAbrir = null; // Guarda la referencia del plano donde habrá que romper la pared
 
-                Terreno terrenoOrigen = Terreno.desdeSimbolo(caracter(f, c)); //crea el objeto terreno en este plano
-                Terreno terrenoDestino = Terreno.desdeSimbolo(otroPlano.caracter(f, c));//crea el objeto terreno para el plano a comparar
+        for (int f = 1; f < filas - 1; f++) {
+            for (int c = 1; c < columnas - 1; c++) {
+                Posicion posicion = new Posicion(f, c);
+
+                Terreno terrenoOrigen = terreno(posicion);
+                Terreno terrenoDestino = otroPlano.terreno(posicion);
 
                 if (terrenoOrigen.esLibreParaConexion() && terrenoDestino.esLibreParaConexion()) {
-                    return pos;
+                    return posicion;  //si en ambos planos la posicion esta libre, lo devuelve
+                }
+
+                if (posicionFallback == null) { //guarda el primer candidata a romper pared si no lo hay.
+                    if (terrenoOrigen.esLibreParaConexion() && terrenoDestino == Terreno.PARED) {
+                        posicionFallback = posicion;
+                        planoAAbrir = otroPlano;
+                    } else if (terrenoDestino.esLibreParaConexion() && terrenoOrigen == Terreno.PARED) {
+                        posicionFallback = posicion;
+                        planoAAbrir = this; //plano actual
+                    }
                 }
             }
         }
 
-        //busca una celda libre en un plano y pared en el otro, y convierte la pared en piso
-
-        for (int f = 1; f < filas - 1; f++) {
-            for (int c = 1; c < columnas - 1; c++) {
-                Posicion pos = new Posicion(f, c);
-
-                Terreno terrenoOrigen = Terreno.desdeSimbolo(caracter(f, c)); //crea el objeto terreno en este plano
-                Terreno terrenoDestino = Terreno.desdeSimbolo(otroPlano.caracter(f, c));
-
-                if (terrenoOrigen.esLibreParaConexion() && terrenoDestino == Terreno.PARED) {
-                    otroPlano.convertirAPiso(pos); //rompe pared en plano destino
-                    return pos;
-                } else if (terrenoDestino.esLibreParaConexion() && terrenoOrigen == Terreno.PARED) {
-                    this.convertirAPiso(pos); //rompe pared en este plano
-                    return pos;
-                }
-            }
+        if (posicionFallback != null) { //si se encontro una celda libre, se rompe pared del plano a abrir y se devuelve la posicion
+            planoAAbrir.cambiarTerreno(posicionFallback, Terreno.PISO);
+            return posicionFallback;
         }
 
         throw new IllegalStateException("No fue posible encontrar ni abrir una celda coincidente entre los dos planos.");
     }
 
-    public void crearEscalera(Posicion posicion) {
-        this.grilla[posicion.fila()][posicion.columna()] = Terreno.ESCALERA.simbolo();
+    public void cambiarTerreno(Posicion posicion, Terreno terreno) {
+        this.grilla[posicion.fila()][posicion.columna()] = terreno;
     }
 
-    public void crearPasillo(Posicion posicion) {
-        this.grilla[posicion.fila()][posicion.columna()] = Terreno.PASILLO.simbolo();
+    public List<Posicion> obtenerCandidatoBordeIzquierdo() {
+        List<Posicion> candidatas = new ArrayList<>(); //se utiliza una lista para elegir una al azar y que no sea siempre la superior izquierda/derecha
+        int filas = cantidadFilas();
+
+        for (int f = 1; f < filas - 1; f++) {
+            cargarCandidataBorde(new Posicion(f, 0), new Posicion(f, 1), candidatas);
+        }
+
+        return candidatas;
     }
 
-    private void convertirAPiso(Posicion pos) {
-        this.grilla[pos.fila()][pos.columna()] = Terreno.PISO.simbolo();
+    public List<Posicion> obtenerCandidatoBordeDerecho() {
+        List<Posicion> candidatas = new ArrayList<>();
+        int filas = cantidadFilas();
+        int colDerecha = cantidadColumna() - 1;
+
+        for (int f = 1; f < filas - 1; f++) {
+            cargarCandidataBorde(new Posicion(f, colDerecha), new Posicion(f, colDerecha - 1), candidatas);
+        }
+
+        return candidatas;
+    }
+
+    private void cargarCandidataBorde(Posicion posicionBorde, Posicion posicionInterior, List<Posicion> candidatas) {
+        Terreno terrenoInterior = terreno(posicionInterior);
+        Terreno terrenoBorde = terreno(posicionBorde);
+
+        //la celda de borde debe estar libre (no tener otra conexión previa) y la celda interior contigua debe ser transitable (no ser pared)
+        if (terrenoBorde.esLibreParaConexion() && terrenoInterior.esTransitable() && terrenoInterior != Terreno.PARED) {
+            candidatas.add(posicionBorde);
+        }
     }
 
 }
