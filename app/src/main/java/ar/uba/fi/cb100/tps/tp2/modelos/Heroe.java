@@ -12,11 +12,11 @@ public class Heroe {
         this.energia = energiaInicial;
     }
 
-    public int getEnergia() {
+    public int energia() {
         return this.energia;
     }
 
-    public Posicion getPosicion() {
+    public Posicion posicion() {
         return this.posicionActual;
     }
 
