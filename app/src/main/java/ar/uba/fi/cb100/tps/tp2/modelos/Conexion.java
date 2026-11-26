@@ -5,15 +5,20 @@ import org.jgrapht.graph.DefaultWeightedEdge;
 //extends DefaultWeightedEdge permite que JGraphT reconozca la clase como un tipo de arista para Graph.
 public class Conexion extends DefaultWeightedEdge {
 
-    public enum TipoConexion { ESCALERA, PASILLO } //para poder identificar si es escalera o pasillo
-
     private final Plano planoOrigen; //donde se encuentra la entrada de la conexion
     private final Posicion posOrigen; //donde esta ubicada la escalera o el pasillo
     private final Plano planoDestino; //el plano destino
     private final Posicion posDestino; //posicion de llegada en el plano destino
-    private final TipoConexion tipo; //guarda el enum para identificar si es escalera o pasillo
+    private final Terreno tipo; //guarda el enum para identificar si es escalera o pasillo
 
-    public Conexion(Plano planoOrigen, Posicion posOrigen, Plano planoDestino, Posicion posDestino, TipoConexion tipo) {
+    public Conexion(Plano planoOrigen, Posicion posOrigen, Plano planoDestino, Posicion posDestino, Terreno tipo) {
+
+        if (tipo != Terreno.ESCALERA && tipo != Terreno.PASILLO) { //se verifica que el terreno sea pasillo o escalera
+            throw new IllegalArgumentException(
+                    "Una conexión solo puede ser de tipo ESCALERA o PASILLO. Tipo recibido: " + tipo
+            );
+        }
+
         this.planoOrigen = planoOrigen;
         this.posOrigen = posOrigen;
         this.planoDestino = planoDestino;
@@ -25,6 +30,6 @@ public class Conexion extends DefaultWeightedEdge {
     public Posicion getPosOrigen() { return posOrigen; }
     public Plano getPlanoDestino() { return planoDestino; }
     public Posicion getPosDestino() { return posDestino; }
-    public TipoConexion getTipo() { return tipo; }
+    public Terreno getTipo() { return tipo; }
 
 }
