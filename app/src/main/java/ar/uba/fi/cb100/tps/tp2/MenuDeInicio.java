@@ -2,11 +2,16 @@ package ar.uba.fi.cb100.tps.tp2;
 
 import ar.uba.fi.cb100.tps.tp2.modelos.Configuracion;
 import ar.uba.fi.cb100.tps.tp2.modelos.Dificultad;
+import ar.uba.fi.cb100.tps.tp2.persistencia.GestorJson;
+
+import java.io.IOException;
 import java.util.Scanner;
 
 public class MenuDeInicio {
 
-    public static Configuracion mostrarMenu(Scanner scanner, Configuracion configuracion) {
+    public static Configuracion mostrarMenu(Scanner scanner, Configuracion configuracionInicial) {
+
+        Configuracion configuracionFinal = configuracionInicial;
 
         while (true) {
             System.out.println("\n=============================");
@@ -23,10 +28,15 @@ public class MenuDeInicio {
             switch (entrada) {
                 case "1" -> {
                     System.out.println("\n¡Cargando la mazmorra...");
-                    return configuracion; //Sale del menu devuelviendo true para iniciar la partida
+
+                    if (!configuracionFinal.equals(configuracionInicial)) {  //Compar la config final vs inicial.
+                        GestorJson.modificarJson(configuracionFinal);       //Si son distintas, se modifica el json
+                    }
+
+                    return configuracionFinal; //Sale del menu devuelviendo true para iniciar la partida
                 }
-                case "2" -> configuracion = new Configuracion(menuDificultades(scanner, configuracion), configuracion.semilla());//Muestra opciones sin salir del loop
-                case "3" -> configuracion = new Configuracion(configuracion.dificultad(), menuSemilla(scanner, configuracion));
+                case "2" -> configuracionFinal = new Configuracion(menuDificultades(scanner, configuracionFinal), configuracionFinal.semilla());//Muestra opciones sin salir del loop
+                case "3" -> configuracionFinal = new Configuracion(configuracionFinal.dificultad(), menuSemilla(scanner, configuracionFinal));
                 case "4" -> {
                     System.out.println("\nSaliendo...");
                     return null; //Sale del menu devolviendo false para terminar el programa
