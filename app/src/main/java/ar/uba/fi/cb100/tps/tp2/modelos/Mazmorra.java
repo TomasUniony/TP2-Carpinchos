@@ -1,7 +1,6 @@
 package ar.uba.fi.cb100.tps.tp2.modelos;
 
-
-import ar.uba.fi.cb100.tps.tp2.GeneradorCarpincho;
+import ar.uba.fi.cb100.tps.tp2.GeneradorDeLaberinto;
 import ar.uba.fi.cb100.tps.tp2.persistencia.GestorJson;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.connectivity.ConnectivityInspector;
@@ -20,7 +19,7 @@ public class Mazmorra {
     private Random azar;
 
 
-    public Mazmorra(GeneradorCarpincho generador, Configuracion configuracion) {
+    public Mazmorra(GeneradorDeLaberinto generador, Configuracion configuracion) {
         this.planos = generarPlanos(generador, configuracion); //genera los planos
 
         this.grafoMazmorra = new SimpleWeightedGraph<>(Conexion.class);  //grafo con peso y sin direcciones.
@@ -52,7 +51,7 @@ public class Mazmorra {
     }
 
     //genera los planos con el generador, en nuestro caso el GeneradorCarpincho
-    private List<Plano> generarPlanos(GeneradorCarpincho generador, Configuracion configuracion) {
+    private List<Plano> generarPlanos(GeneradorDeLaberinto generador, Configuracion configuracion) {
 
         int cantidadPlanos = configuracion.dificultad().cantPlanos();
         if (cantidadPlanos <= 0) {
@@ -157,6 +156,10 @@ public class Mazmorra {
         if (!inspector.pathExists(planoInicial, this.planoSalida)) {
             throw new IllegalStateException("La mazmorra generada no posee un camino válido desde el plano inicial hasta la salida.");
         }
+    }
+
+    public Plano planoInicial() {
+        return planos.getFirst();
     }
 }
 
