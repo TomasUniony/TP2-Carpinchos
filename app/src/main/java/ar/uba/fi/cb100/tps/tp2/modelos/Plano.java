@@ -53,7 +53,7 @@ public class Plano {
 
     public Posicion posicionHeroe() { return posicionHeroe; }
 
-    public boolean tieneSalida() { return posicionSalida != null; }
+    public boolean tieneSalida() { return salida; }
 
     public Posicion posicionSalida() {
         if (posicionSalida == null) {
@@ -61,4 +61,49 @@ public class Plano {
         }
         return posicionSalida;
     }
+
+    public Posicion buscarCeldaLibreCoincidente(Plano otroPlano) {
+        int filas = cantidadFilas();
+        int columnas = cantidadColumna();
+
+        //busca coincidencia directa de celdas libres en ambos planos
+        for (int f = 1; f < filas - 1; f++) { //empieza en 1 y termina en -1, porque no nos sirve recorrer los bordes del mapa
+            for (int c = 1; c < columnas - 1; c++) {
+                Posicion pos = new Posicion(f, c);
+
+                Terreno terrenoOrigen = Terreno.desdeSimbolo(caracter(f, c)); //crea el objeto terreno en este plano
+                Terreno terrenoDestino = Terreno.desdeSimbolo(otroPlano.caracter(f, c));//crea el objeto terreno para el plano a comparar
+
+                if (terrenoOrigen.esLibreParaConexion() && terrenoDestino.esLibreParaConexion()) {
+                    return pos;
+                }
+            }
+        }
+
+        //busca una celda libre en un plano y pared en el otro, y convierte la pared en piso
+
+        for (int f = 1; f < filas - 1; f++) {
+            for (int c = 1; c < columnas - 1; c++) {
+                Posicion pos = new Posicion(f, c);
+
+                Terreno terrenoOrigen = Terreno.desdeSimbolo(caracter(f, c)); //crea el objeto terreno en este plano
+                Terreno terrenoDestino = Terreno.desdeSimbolo(otroPlano.caracter(f, c));
+
+                if (terrenoOrigen.esLibreParaConexion() && terrenoDestino == Terreno.PARED) {
+                    otroPlano.convertirAPiso(pos); //rompe pared en plano destino
+                    return pos;
+                } else if (terrenoDestino.esLibreParaConexion() && terrenoOrigen == Terreno.PARED) {
+                    this.convertirAPiso(pos); //rompe pared en este plano
+                    return pos;
+                }
+            }
+        }
+
+        throw new IllegalStateException("No fue posible encontrar ni abrir una celda coincidente entre los dos planos.");
+    }
+
+    private void convertirAPiso(Posicion pos) {
+        this.grilla[pos.fila()][pos.columna()] = Terreno.PISO.simbolo();
+    }
+
 }
