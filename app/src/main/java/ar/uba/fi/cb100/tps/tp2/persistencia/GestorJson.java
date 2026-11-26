@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.Random;
 
 import ar.uba.fi.cb100.tps.tp2.modelos.Configuracion;
+import ar.uba.fi.cb100.tps.tp2.modelos.Dificultad;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonNull;
 import com.google.gson.JsonObject;
@@ -24,6 +25,28 @@ public class GestorJson {
      * Formatea un String JSON con pretty printing y lo escribe en disco.
      * Crea los directorios padres si no existen.
      */
+
+    public static Configuracion obtenerConfiguracionInicial () {
+        Path config = Path.of("configuracion.json");
+
+        String parametrosJson;
+
+        try {
+            parametrosJson = Files.readString(config, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new UncheckedIOException("No se pudo leer " + config, e);
+        }
+
+        JsonObject datosIniciales = JsonParser.parseString(parametrosJson).getAsJsonObject();
+
+        Dificultad dificultadInicial = Dificultad.desdeNombre(datosIniciales.get("dificultad").getAsString());
+
+        Long semillaInicial = (datosIniciales.has("semilla") && !datosIniciales.get("semilla").isJsonNull())
+                ? datosIniciales.get("semilla").getAsLong() : null; //Por si se recibe una semilla null de base.
+
+        return new Configuracion(dificultadInicial, semillaInicial); //Creo la dificultad inicial, para poder modificarla
+    }
+
     public static void guardarJson(String json, Path destino) {
         if (json == null || destino == null) {
             throw new IllegalArgumentException("El contenido JSON y la ruta de destino no pueden ser nulos");
