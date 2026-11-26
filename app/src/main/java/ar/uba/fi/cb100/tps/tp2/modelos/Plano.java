@@ -102,6 +102,14 @@ public class Plano {
         throw new IllegalStateException("No fue posible encontrar ni abrir una celda coincidente entre los dos planos.");
     }
 
+    public void crearEscalera(Posicion posicion) {
+        this.grilla[posicion.fila()][posicion.columna()] = Terreno.ESCALERA.simbolo();
+    }
+
+    public void crearPasillo(Posicion posicion) {
+        this.grilla[posicion.fila()][posicion.columna()] = Terreno.PASILLO.simbolo();
+    }
+
     private void convertirAPiso(Posicion pos) {
         this.grilla[pos.fila()][pos.columna()] = Terreno.PISO.simbolo();
     }
