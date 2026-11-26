@@ -51,9 +51,11 @@ public enum Dificultad {
 
     public int cantMonstruos() { return cantMonstruos; }
 
-    public int cantEscalesras() { return cantEscaleras; }
+    public int cantEscaleras() { return cantEscaleras; }
 
     public int cantPasillos() { return cantPasillos; }
+
+    public int cantPlanos() { return this.cantTableros * this.pisosPorTablero; }
 
     public static Dificultad desdeNombre(String nombre) {
         if (nombre == null) {
