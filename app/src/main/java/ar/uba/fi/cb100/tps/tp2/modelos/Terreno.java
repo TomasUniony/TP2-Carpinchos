@@ -6,7 +6,9 @@ public enum Terreno {
     AGUA('~', true, 3),
     LAVA('^', true, 8),
     ENTRADA('E', true, 1),
-    SALIDA('S', true, 1);
+    SALIDA('S', true, 1),
+    ESCALERA('H', true, 1),
+    PASILLO('P', true, 1);
 
     private final char simbolo;
     private final boolean transitable;
@@ -24,6 +26,10 @@ public enum Terreno {
 
     public boolean esTransitable() {
         return this.transitable;
+    }
+
+    public boolean esLibreParaConexion() {  //para crear conexiones sin reemplazar la entrada ni salida
+        return esTransitable() && this != ENTRADA && this != SALIDA && this != ESCALERA && this != PASILLO;
     }
 
     public int costoEnergia() {
