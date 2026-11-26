@@ -65,6 +65,10 @@ public class Plano {
         return posicionSalida;
     }
 
+    public boolean esTransitable(Posicion posicion) { //para facilitar la llamada a esTransitable de terreno
+        return this.grilla[posicion.fila()][posicion.columna()].esTransitable();
+    }
+
     public Posicion buscarCeldaLibreCoincidente(Plano otroPlano) {
         int filas = cantidadFilas();
         int columnas = cantidadColumna();
