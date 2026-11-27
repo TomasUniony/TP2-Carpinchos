@@ -5,7 +5,11 @@ import ar.uba.fi.cb100.tps.tp2.modelos.Cofre;
 import ar.uba.fi.cb100.tps.tp2.modelos.Heroe;
 import ar.uba.fi.cb100.tps.tp2.modelos.Item;
 
-/** Cofre que guarda un item en el inventario del heroe al abrirse. */
+/**
+ * Cofre de item: al abrirlo, el heroe recibe un item.
+ * @param item item que recibe el heroe
+ * @throws IllegalArgumentException si el item es nulo
+ */
 public class CofreDeItem extends Cofre {
 
     private final Item item;
@@ -22,7 +26,7 @@ public class CofreDeItem extends Cofre {
         this.item = item;
     }
 
-    // El item va al inventario; se usa despues con la accion 'u'.
+    // El efecto es sumar el item al inventario del héroe.
     @Override
     protected void aplicarEfecto(Heroe heroe, Agenda agenda) {
         heroe.getInventario().agregar(this.item);

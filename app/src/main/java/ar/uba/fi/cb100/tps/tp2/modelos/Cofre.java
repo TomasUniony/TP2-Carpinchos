@@ -7,12 +7,15 @@ public abstract class Cofre{
 
     private final int puntos;
 
-    /** Cofre que suma los puntos por defecto. */
+    //Cofre que suma los puntos por defecto
     protected Cofre() {
         this.puntos= PUNTOS_POR_DEFECTO;
     }
 
-    /** Cofre que suma una cantidad propia de puntos. */
+    /** Cofre que suma una cantidad propia de puntos.
+     * @param puntos cantidad de puntos que suma el cofre
+     * @throws IllegalArgumentException si los puntos son negativos
+     */
     protected Cofre(int puntos) {
         if (puntos < 0) {
             throw new IllegalArgumentException("Puntos invalidos: " + puntos);
