@@ -1,7 +1,4 @@
-package ar.uba.fi.cb100.tps.tp2.modelos.cofres;
-
-import ar.uba.fi.cb100.tps.tp2.modelos.Agenda;
-import ar.uba.fi.cb100.tps.tp2.modelos.Heroe;
+package ar.uba.fi.cb100.tps.tp2.modelos;
 
 public abstract class Cofre{
 

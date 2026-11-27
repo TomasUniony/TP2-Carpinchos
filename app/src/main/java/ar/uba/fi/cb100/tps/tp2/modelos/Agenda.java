@@ -10,6 +10,7 @@ public class Agenda {
 
     private final PriorityQueue<EventoProgramado> eventos = new PriorityQueue<>();
     private long contadorOrden = 0;
+    private long pasoActual = 0;
 
     /**
      * Programa una accion para que se ejecute en un paso futuro.
@@ -36,9 +37,30 @@ public class Agenda {
      * @param pasoActual paso en el que esta el juego
      */
     public void ejecutarHasta(long pasoActual) {
+        this.pasoActual = pasoActual;
         while (!this.eventos.isEmpty() && this.eventos.peek().paso() <= pasoActual) {
             this.eventos.poll().accion().run();
         }
+    }
+
+    /**
+     * Programa una accion para dentro de una cantidad de pasos,
+     * contados desde el paso actual de la agenda.
+     *
+     * @param pasos  cuantos pasos faltan (mayor a 0)
+     * @param accion lo que hay que hacer cuando llegue ese paso
+     * @throws IllegalArgumentException si los pasos no son positivos o la accion es nula
+     */
+    public void programarDentroDe(long pasos, Runnable accion) {
+        if (pasos <= 0) {
+            throw new IllegalArgumentException("Cantidad de pasos invalida: " + pasos);
+        }
+        this.programar(this.pasoActual + pasos, accion);
+    }
+
+    /** Ultimo paso que le informaron a la agenda (0 si todavia ninguno). */
+    public long getPasoActual() {
+        return this.pasoActual;
     }
 
     /** Indica si no quedan eventos pendientes. */
