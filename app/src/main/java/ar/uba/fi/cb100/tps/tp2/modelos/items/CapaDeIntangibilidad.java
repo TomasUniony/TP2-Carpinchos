@@ -23,6 +23,6 @@ public class CapaDeIntangibilidad extends Item {
     //El heroe atraviesa paredes durante DURACION_EN_PASOS pasos.
     @Override
     public void usar(Heroe heroe, Agenda agenda) {
-        heroe.activarEfecto(new AtravesarParedes(), DURACION_EN_PASOS, agenda);
+        heroe.efectos().activar(new AtravesarParedes(), DURACION_EN_PASOS, agenda);
     }
 }

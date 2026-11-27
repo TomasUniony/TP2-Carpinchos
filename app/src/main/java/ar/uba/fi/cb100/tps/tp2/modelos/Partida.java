@@ -32,13 +32,22 @@ public class Partida {
 
         Posicion posicionDestino = this.heroe.posicion().desplazar(direccion);  //se obtiene la posicion destino (no se mueve el heroe)
 
-        if (!this.planoActual.esTransitable(posicionDestino)) { //si no es transitable volver
+        //si la posicion destino no esta dentro del plano actual, no se realiza el movimiento
+        if (!this.planoActual.contiene(posicionDestino)) {
+            return;
+        }
+        
+        Terreno terreno = this.planoActual.terreno(posicionDestino); //se obtiene el terreno
+        
+        boolean puedePisar = terreno.esTransitable() || (this.heroe.efectos().permitePisar(terreno) 
+                                && !this.planoActual.esBorde(posicionDestino));
+        if (!puedePisar) {
             return;
         }
 
-        Terreno terreno = this.planoActual.terreno(posicionDestino); //se obtiene el terreno
-        heroe.movimiento(direccion); //se mueve al heroe
-        this.heroe.quitarEnergia(terreno.costoEnergia()); //se quita la energia correspondiente al terreno
+        int costo = this.heroe.efectos().costoDe(terreno);
+        this.heroe.movimiento(direccion);
+        this.heroe.quitarEnergia(costo);
 
         if (terreno == Terreno.SALIDA) {
             this.victoria = true;

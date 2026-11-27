@@ -6,8 +6,9 @@ import java.util.Map;
 
 /**
  * Inventario del heroe: para cada tipo de item guarda cuantas unidades tiene.
- * Usa una tabla hash (tipo -> cantidad) porque se consulta por clave
- * muchas veces por paso y la busqueda cuesta O(1).
+ * Usa una tabla hash (tipo -> cantidad).
+ * @param items tabla hash de tipo -> cantidad
+ * @throws IllegalArgumentException si el tipo es nulo o la cantidad no es positiva
  */
 public class Inventario {
 
@@ -57,24 +58,19 @@ public class Inventario {
         return true;
     }
 
-    /** Cantidad de unidades que se tienen del item (0 si no tiene ninguna). */
     public int cantidad(Item tipo) {
         return this.items.getOrDefault(tipo, 0);
     }
 
-    /** Indica si se tiene al menos una unidad del item. */
     public boolean contiene(Item tipo) {
         return this.items.containsKey(tipo);
     }
 
-    /** Indica si el inventario no tiene ningun item. */
     public boolean estaVacio() {
         return this.items.isEmpty();
     }
 
-    /**
-     * Vista de solo lectura del contenido, util para mostrarlo o guardarlo en JSON.
-     */
+    //Vista de solo lectura del contenido, util para mostrarlo o guardarlo en JSON.
     public Map<Item, Integer> comoMapa() {
         return Collections.unmodifiableMap(this.items);
     }

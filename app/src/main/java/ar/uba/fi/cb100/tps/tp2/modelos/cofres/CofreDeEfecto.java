@@ -35,6 +35,6 @@ public class CofreDeEfecto extends Cofre {
     // El efecto queda activo y la agenda programa su vencimiento.
     @Override
     protected void aplicarEfecto(Heroe heroe, Agenda agenda) {
-        heroe.activarEfecto(this.efecto, this.duracion, agenda);
+        heroe.efectos().activar(this.efecto, this.duracion, agenda);
     }
 }

@@ -143,5 +143,25 @@ public class Plano {
             candidatas.add(posicionBorde);
         }
     }
+    
+    /** Indica si la posicion cae dentro de la grilla.
+     *  @param posicion posicion a verificar
+     * @return true si la posicion esta dentro de la grilla, false si esta
+     *  fuera de los limites del plano
+     */
+    public boolean contiene(Posicion posicion) {
+        return posicion.fila() >= 0 && posicion.fila() < this.cantidadFilas()
+            && posicion.columna() >= 0 && posicion.columna() < this.cantidadColumna();
+    }
+
+    /**
+     * Indica si la posicion es un borde del plano (fila 0, fila maxima, columna 0 o columna maxima).
+     * @param posicion posicion a verificar
+     * @return true si la posicion es un borde del plano, false si no lo es
+     */
+    public boolean esBorde(Posicion posicion) {
+        return posicion.fila() == 0 || posicion.fila() == this.cantidadFilas() - 1
+            || posicion.columna() == 0 || posicion.columna() == this.cantidadColumna() - 1;
+    }
 
 }

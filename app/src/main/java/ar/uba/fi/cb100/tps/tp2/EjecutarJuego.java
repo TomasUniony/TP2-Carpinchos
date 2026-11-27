@@ -1,8 +1,13 @@
 package ar.uba.fi.cb100.tps.tp2;
 
-import ar.uba.fi.cb100.tps.tp2.modelos.*;
-import ar.uba.fi.cb100.tps.tp2.persistencia.GestorJson;
 import java.util.Scanner;
+
+import ar.uba.fi.cb100.tps.tp2.modelos.Configuracion;
+import ar.uba.fi.cb100.tps.tp2.modelos.Heroe;
+import ar.uba.fi.cb100.tps.tp2.modelos.Partida;
+import ar.uba.fi.cb100.tps.tp2.modelos.Plano;
+import ar.uba.fi.cb100.tps.tp2.modelos.VistaConsola;
+import ar.uba.fi.cb100.tps.tp2.persistencia.GestorJson;
 
 public class EjecutarJuego {
 

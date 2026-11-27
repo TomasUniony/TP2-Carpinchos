@@ -5,11 +5,14 @@ import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Random;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import ar.uba.fi.cb100.tps.tp2.modelos.Configuracion;
 import ar.uba.fi.cb100.tps.tp2.modelos.Dificultad;
-import com.google.gson.*;
 
 public class GestorJson {
 
@@ -35,14 +38,14 @@ public class GestorJson {
     public static String leerTextoConfiguracion() {
         Path config = Path.of("configuracion.json");
         if (!Files.exists(config)) {
-            config = Path.of("app/configuracion.json");
+            config = Path.of("src/main/java/ar/uba/fi/cb100/tps/tp2/configuracion.json");
         }
         return leerTextoConfiguracion(config);
     }
 
     public static Configuracion obtenerConfiguracionInicial () {
 
-        String parametrosJson = leerTextoConfiguracion(Path.of("configuracion.json"));
+        String parametrosJson = leerTextoConfiguracion(Path.of("src/main/java/ar/uba/fi/cb100/tps/tp2/configuracion.json"));
 
         JsonObject datosIniciales = JsonParser.parseString(parametrosJson).getAsJsonObject();
 
@@ -91,7 +94,7 @@ public class GestorJson {
 
     public static void modificarJson(Configuracion configuracion) { //devuelve el json reescrito
         try {
-            Path ruta = Path.of("configuracion.json");
+            Path ruta = Path.of("src/main/java/ar/uba/fi/cb100/tps/tp2/configuracion.json");
             String parametrosJson = leerTextoConfiguracion(ruta);
 
             JsonObject jsonObject = JsonParser.parseString(parametrosJson).getAsJsonObject(); //parsear el texto a JsonObject

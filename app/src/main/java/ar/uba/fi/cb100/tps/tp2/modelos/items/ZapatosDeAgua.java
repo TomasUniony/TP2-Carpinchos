@@ -23,6 +23,6 @@ public class ZapatosDeAgua extends Item {
     //El agua cuesta como piso durante DURACION_EN_PASOS pasos.
     @Override
     public void usar(Heroe heroe, Agenda agenda) {
-        heroe.activarEfecto(new AguaComoPiso(), DURACION_EN_PASOS, agenda);
+        heroe.efectos().activar(new AguaComoPiso(), DURACION_EN_PASOS, agenda);
     }
 }

@@ -23,7 +23,7 @@ import com.google.gson.JsonParser;
 */
 public class GeneradorCarpincho implements GeneradorDeLaberinto{
     
-    private static final String NOMBRE_GRUPO = "Grupo Carpinchos";
+    private static final String NOMBRE_GRUPO = "Carpinchos";
 
     //Constantes de la mazmorra
     private static final char PARED = '#';
