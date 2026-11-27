@@ -19,7 +19,7 @@ public class PocionDeEnergia extends Item {
         super(ID);
     }
 
-    // Al usarla, el heroe gana ENERGIA_QUE_DA de energia.
+    // Al usarla, el heroe gana ENERGIA de energia.
     @Override
     public void usar(Heroe heroe, Agenda agenda) {
         heroe.agregarEnergia(ENERGIA);
