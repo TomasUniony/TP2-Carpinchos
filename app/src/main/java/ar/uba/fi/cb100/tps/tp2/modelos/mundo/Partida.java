@@ -36,8 +36,13 @@ public class Partida {
 
         Celda celdaActual = this.planoActual.celda(posicionActual); //se obtiene la celda actual
         Celda celdaDestino = this.planoActual.celda(posicionDestino); //se obtiene la celda destino
+        Terreno terreno = celdaDestino.terreno();
 
-        if (celdaDestino.terreno() == Terreno.PARED) { //si no es transitable volver
+
+        boolean puedePisar = terreno.esTransitable() || (this.heroe.efectos().permitePisar(terreno)
+                && !this.planoActual.esBorde(posicionDestino));
+
+        if (puedePisar) { //si no es transitable volver
             return;
         } else if (!celdaDestino.estaVacia()) { //CAMBIAR, LO QUE PASARIA SI CONTIENE UNA ENTIDAD
             celdaDestino.vaciarContenido();
@@ -45,14 +50,13 @@ public class Partida {
 
         celdaActual.vaciarContenido(); //se saca al heroe de la celda
 
-
-
         heroe.movimiento(direccion); //se mueve al heroe
         celdaDestino.cargarContenido(Entidad.HEROE);
 
-        Terreno terreno = celdaDestino.terreno();
+        int costo = this.heroe.efectos().costoDe(terreno);
+        this.heroe.quitarEnergia(costo); //se quita la energia
 
-        this.heroe.quitarEnergia(terreno.costoEnergia()); //se quita la energia correspondiente al terreno
+
 
         if (terreno == Terreno.ESCALERA || terreno == Terreno.PASILLO) {
             Conexion conexion = this.mazmorra.buscarConexion(this.planoActual, posicionDestino);
