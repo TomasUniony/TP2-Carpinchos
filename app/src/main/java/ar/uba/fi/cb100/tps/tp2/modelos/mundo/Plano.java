@@ -1,10 +1,12 @@
-package ar.uba.fi.cb100.tps.tp2.modelos;
+package ar.uba.fi.cb100.tps.tp2.modelos.mundo;
+
+import ar.uba.fi.cb100.tps.tp2.modelos.Posicion;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Plano {
-    private final Terreno[][] grilla;
+    private final Celda[][] grilla;
     private boolean salida;
     private Posicion posicionSalida;
     private Posicion posicionHeroe;
@@ -14,7 +16,7 @@ public class Plano {
             throw new IllegalArgumentException("El plano no puede estar vacío.");
         }
 
-        this.grilla = new Terreno[plano.length][plano[0].length()];
+        this.grilla = new Celda[plano.length][plano[0].length()];
 
         //se recorre caractero a caracter para llenar todos los datos en un recorrido solo
         for (int i = 0; i < plano.length; i++) {
@@ -25,7 +27,22 @@ public class Plano {
 
             for (int j = 0; j < plano[0].length(); j++) {
                 char c = plano[i].charAt(j);
-                this.grilla[i][j] = Terreno.desdeSimbolo(c);
+
+                Terreno terreno = Terreno.desdeSimbolo(c);
+                Entidad entidad = null;
+
+                if (terreno == null) {
+                    terreno = Terreno.PISO;
+                    entidad = Entidad.desdeCaracter(c);
+                }
+
+                Celda celda = new Celda(terreno);
+
+                if (entidad != null) {
+                    celda.cargarContenido(entidad);
+                }
+
+                this.grilla[i][j] = celda;
 
                 //si se encuentran, se agrega en el estado
                 if (c == 'E') {
@@ -42,8 +59,12 @@ public class Plano {
         }
     }
 
-    public Terreno terreno(Posicion posicion) {
+    public Celda celda(Posicion posicion) {
         return grilla[posicion.fila()][posicion.columna()];
+    }
+
+    public Terreno terreno(Posicion posicion) {
+        return grilla[posicion.fila()][posicion.columna()].terreno();
     }
 
     public int cantidadFilas() {
@@ -108,7 +129,7 @@ public class Plano {
     }
 
     public void cambiarTerreno(Posicion posicion, Terreno terreno) {
-        this.grilla[posicion.fila()][posicion.columna()] = terreno;
+        this.grilla[posicion.fila()][posicion.columna()].cambiarTerreno(terreno);
     }
 
     public List<Posicion> obtenerCandidatoBordeIzquierdo() {

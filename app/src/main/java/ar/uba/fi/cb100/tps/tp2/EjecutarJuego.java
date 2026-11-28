@@ -1,6 +1,9 @@
 package ar.uba.fi.cb100.tps.tp2;
 
 import ar.uba.fi.cb100.tps.tp2.modelos.*;
+import ar.uba.fi.cb100.tps.tp2.modelos.mundo.Partida;
+import ar.uba.fi.cb100.tps.tp2.modelos.mundo.Plano;
+import ar.uba.fi.cb100.tps.tp2.modelos.mundo.VistaConsola;
 import ar.uba.fi.cb100.tps.tp2.persistencia.GestorJson;
 import java.util.Scanner;
 

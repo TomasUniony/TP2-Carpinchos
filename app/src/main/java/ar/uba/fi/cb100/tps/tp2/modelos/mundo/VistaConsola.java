@@ -1,4 +1,6 @@
-package ar.uba.fi.cb100.tps.tp2.modelos;
+package ar.uba.fi.cb100.tps.tp2.modelos.mundo;
+
+import ar.uba.fi.cb100.tps.tp2.modelos.Posicion;
 
 public class VistaConsola {
 
@@ -8,12 +10,9 @@ public class VistaConsola {
         for (int f = 0; f < plano.cantidadFilas(); f++) {
             for (int c = 0; c < plano.cantidadColumna(); c++) {
                 Posicion posActual = new Posicion(f, c);
+                char caracter = plano.celda(posActual).simbolo();
 
-                if (posActual.equals(posHeroe)) {
-                    System.out.print('E'); //dibuja al heroe sobre la grilla visual
-                } else {
-                    System.out.print(plano.terreno(posActual).simbolo());
-                }
+                System.out.print(caracter);
             }
             System.out.println();//salto de línea al finalizar cada fila
         }

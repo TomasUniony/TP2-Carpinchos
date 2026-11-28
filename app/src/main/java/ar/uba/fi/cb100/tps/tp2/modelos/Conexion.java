@@ -1,5 +1,7 @@
 package ar.uba.fi.cb100.tps.tp2.modelos;
 
+import ar.uba.fi.cb100.tps.tp2.modelos.mundo.Plano;
+import ar.uba.fi.cb100.tps.tp2.modelos.mundo.Terreno;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 //extends DefaultWeightedEdge permite que JGraphT reconozca la clase como un tipo de arista para Graph.

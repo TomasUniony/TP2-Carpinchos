@@ -1,6 +1,7 @@
-package ar.uba.fi.cb100.tps.tp2.modelos;
+package ar.uba.fi.cb100.tps.tp2.modelos.mundo;
 
 import ar.uba.fi.cb100.tps.tp2.GeneradorDeLaberinto;
+import ar.uba.fi.cb100.tps.tp2.modelos.*;
 import ar.uba.fi.cb100.tps.tp2.persistencia.GestorJson;
 import org.jgrapht.Graph;
 import org.jgrapht.alg.connectivity.ConnectivityInspector;

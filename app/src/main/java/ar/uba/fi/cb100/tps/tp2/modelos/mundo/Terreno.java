@@ -1,4 +1,4 @@
-package ar.uba.fi.cb100.tps.tp2.modelos;
+package ar.uba.fi.cb100.tps.tp2.modelos.mundo;
 
 public enum Terreno {
     PARED('#', false, 0),
@@ -42,7 +42,7 @@ public enum Terreno {
                 return t;
             }
         }
-        return PISO; //Esto seria en el caso de 'C' o 'M', son transitables.
+        return null; //En el plano se cambia por piso, y se le añade monstruo
     }
 
 }

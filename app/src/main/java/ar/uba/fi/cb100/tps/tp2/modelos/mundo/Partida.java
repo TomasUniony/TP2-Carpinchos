@@ -1,6 +1,7 @@
-package ar.uba.fi.cb100.tps.tp2.modelos;
+package ar.uba.fi.cb100.tps.tp2.modelos.mundo;
 
 import ar.uba.fi.cb100.tps.tp2.GeneradorDeLaberinto;
+import ar.uba.fi.cb100.tps.tp2.modelos.*;
 
 public class Partida {
     private final Mazmorra mazmorra;
@@ -30,14 +31,27 @@ public class Partida {
             return;              //direccion devuelve null y no se realiza el movimiento
         }
 
+        Posicion posicionActual = this.heroe.posicion();
         Posicion posicionDestino = this.heroe.posicion().desplazar(direccion);  //se obtiene la posicion destino (no se mueve el heroe)
 
-        if (!this.planoActual.esTransitable(posicionDestino)) { //si no es transitable volver
+        Celda celdaActual = this.planoActual.celda(posicionActual); //se obtiene la celda actual
+        Celda celdaDestino = this.planoActual.celda(posicionDestino); //se obtiene la celda destino
+
+        if (celdaDestino.terreno() == Terreno.PARED) { //si no es transitable volver
             return;
+        } else if (!celdaDestino.estaVacia()) { //CAMBIAR, LO QUE PASARIA SI CONTIENE UNA ENTIDAD
+            celdaDestino.vaciarContenido();
         }
 
-        Terreno terreno = this.planoActual.terreno(posicionDestino); //se obtiene el terreno
+        celdaActual.vaciarContenido(); //se saca al heroe de la celda
+
+
+
         heroe.movimiento(direccion); //se mueve al heroe
+        celdaDestino.cargarContenido(Entidad.HEROE);
+
+        Terreno terreno = celdaDestino.terreno();
+
         this.heroe.quitarEnergia(terreno.costoEnergia()); //se quita la energia correspondiente al terreno
 
         if (terreno == Terreno.ESCALERA || terreno == Terreno.PASILLO) {
