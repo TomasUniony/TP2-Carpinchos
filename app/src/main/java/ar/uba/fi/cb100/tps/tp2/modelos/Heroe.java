@@ -41,4 +41,8 @@ public class Heroe {
     public void movimiento(Direccion dir) {
         this.posicionActual = this.posicionActual.desplazar(dir);
     }
+
+    public void cambiarDePlano(Posicion posicion){
+        this.posicionActual = posicion;
+    }
 }

@@ -161,5 +161,14 @@ public class Mazmorra {
     public Plano planoInicial() {
         return planos.getFirst();
     }
+
+    public Conexion buscarConexion(Plano plano, Posicion posicion) {
+        for (Conexion c : this.conexiones) {
+            if (c.conectaEn(plano, posicion)) {
+                return c;
+            }
+        }
+        return null;
+    }
 }
 

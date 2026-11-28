@@ -40,6 +40,14 @@ public class Partida {
         heroe.movimiento(direccion); //se mueve al heroe
         this.heroe.quitarEnergia(terreno.costoEnergia()); //se quita la energia correspondiente al terreno
 
+        if (terreno == Terreno.ESCALERA || terreno == Terreno.PASILLO) {
+            Conexion conexion = this.mazmorra.buscarConexion(this.planoActual, posicionDestino);
+            if (conexion != null) {
+                this.planoActual = conexion.obtenerPlanoDestinoDesde(this.planoActual);
+                this.heroe.cambiarDePlano(conexion.obtenerPosicionDestinoDesde(this.planoActual));
+            }
+        }
+
         if (terreno == Terreno.SALIDA) {
             this.victoria = true;
         }
